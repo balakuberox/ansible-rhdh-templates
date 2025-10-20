@@ -1,7 +1,7 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: New Input form
+  name: New-Input-form
   title: New Input form Testing
   description: Create a new Form Testing
   tags:
