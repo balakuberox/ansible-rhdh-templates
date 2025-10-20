@@ -80,6 +80,18 @@ spec:
             catalogFilter:
               kind:
                 - System
+  steps:
+    - id: ansible
+      name: Generating the Ansible Source Code Component
+      action: ansible:content:create
+      input:
+        repoOwner: '${{ parameters.repoOwner }}'
+        repoName: '${{ parameters.repoName }}'
+        description: '${{ parameters.description }}'
+        collectionGroup: '${{ parameters.collectionGroup }}'
+        collectionName: '${{ parameters.collectionName }}'
+        applicationType: playbook-project
+        sourceControl: '${{ parameters.sourceControl }}'
   output:
     links:
       - title: Repository
