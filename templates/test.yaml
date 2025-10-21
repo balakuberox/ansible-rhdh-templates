@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: ansible-playbook-template-new
-  title: New Input form Testing
+  title: Ns kajksjalks ajslkas
   description: Create a new Form Testing
   tags:
     - recommended
