@@ -13,22 +13,8 @@ spec:
   owner: RedHat
   type: service
 
+  # Cleaned up parameters: Only contains fields your user actually fills out!
   parameters:
-    # --- Step 1: Capture Token Natively ---
-    - title: Platform Authentication
-      required:
-        - token
-      properties:
-        token:
-          title: Token
-          type: string
-          description: Oauth2 token
-          ui:field: AAPTokenField
-          ui:backstage:
-            review:
-              show: false
-
-    # --- Step 2: Database Inputs ---
     - title: Database Specification Details
       description: Provide the parameters for your new database engine
       required:
@@ -67,7 +53,8 @@ spec:
       name: Launch DBaaS Job Template
       action: rhaap:launch-job-template
       input:
-        token: ${{ parameters.token }}
+        # [FIX] Read directly from the secrets object instead of parameters!
+        token: ${{ secrets.aapToken }}
         values:
           template: "Database-as-a-Service (DBaaS) Provisioner"
           extraVariables:
