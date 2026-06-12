@@ -69,7 +69,7 @@ spec:
       input:
         token: ${{ secrets.aapToken }}
         values:
-          template: "Database-as-a-Service (DBaaS) Provisioner" 
+          template: "Database-as-a-Service (DBaaS) Provisioner." 
           extraVariables:
             db_type: ${{ parameters.db_type }}
             vm_size: ${{ parameters.vm_size }}
@@ -78,22 +78,19 @@ spec:
             db_password: ${{ parameters.db_password }}
 
   output:
-      text:
-        - title: 'DBaaS Provisioning Requested Successfully.'
-          content: |           
-            ### Your Database Connection Summary below
-            
-            Based on your choices, here are the connection profiles being initialized:
-            
-            * **Database Engine:** ${{ parameters.db_type }}
-            * **Target Schema:** ${{ parameters.db_name }}
-            * **Admin Username:** ${{ parameters.db_user }}
-            
-            #### Standard Connection URL
-            `${{ parameters.db_type }}://${{ parameters.db_user }}:${{ parameters.db_password }}@172.31.60.175:5432/${{ parameters.db_name }}`
-            
-            #### Direct CLI Command Connection
-            `PGPASSWORD='${{ parameters.db_password }}' psql -h 172.31.60.175 -U ${{ parameters.db_user }} -d ${{ parameters.db_name }}`
-            
-            * **Service Portal Job Tracker Link:** Check your main AAP dashboard workspace to watch the execution logs compile the setup parameters.
-            ```
+    text:
+      - title: 'DBaaS Provisioning Requested Successfully.'
+        content: |    
+          Your custom instance has been successfully provisioned on OpenShift Virtualization.
+          
+          ### Your Database Connection Summary below
+          
+          Based on your choices, here are the connection profiles being initialized:
+          
+          * **Database Engine:** ${{ parameters.db_type }}
+          * **Target Schema:** ${{ parameters.db_name }}
+          * **Admin Username:** ${{ parameters.db_user }}
+          
+          #### Standard Connection URL & CLI Commands
+          ${{ steps['launch-dbaas-job'].output.data.artifacts.db_connection_info }}
+          
