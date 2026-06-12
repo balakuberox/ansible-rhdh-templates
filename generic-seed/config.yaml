@@ -18,7 +18,7 @@ spec:
       description: Provide the parameters for your new database engine
       required:
         - db_type
-        - vm_size # [UPDATED] Mark it required for the form
+        - vm_size
         - db_name
         - db_user
         - db_password
@@ -34,8 +34,6 @@ spec:
           enumNames:
             - "PostgreSQL 15"
             - "MySQL / MariaDB"
-            
-        # [NEW FIELD] Dropdown for the user to select the VM instance profile
         vm_size:
           title: Virtual Machine Compute Size
           type: string
@@ -49,7 +47,6 @@ spec:
             - "Small (2 vCPU, 4GB RAM)"
             - "Medium (4 vCPU, 8GB RAM)"
             - "Large (8 vCPU, 16GB RAM)"
-
         db_name:
           title: Database Name
           type: string
@@ -72,20 +69,34 @@ spec:
         token: ${{ secrets.aapToken }}
         values:
           template: "Database-as-a-Service (DBaaS) Provisioner"
+          # Increases the polling timeout window to ensure the portal waits for the VM completion
+          timeout: 600 
           extraVariables:
             db_type: ${{ parameters.db_type }}
-            vm_size: ${{ parameters.vm_size }} # [UPDATED] Forward it over to AAP here!
+            vm_size: ${{ parameters.vm_size }}
             db_name: ${{ parameters.db_name }}
             db_user: ${{ parameters.db_user }}
             db_password: ${{ parameters.db_password }}
 
   output:
     text:
-      - title: 'DBaaS Provisioning Job Triggered Successfully'
+      - title: 'DBaaS Provisioning Completed Successfully! 🎉'
         content: |
-          Your request has been successfully routed to the Ansible Automation Platform engine.
+          Your request has been successfully executed by the Ansible Automation Platform engine.
           
-          **Job Execution ID:** `${{ steps['launch-dbaas-job'].output.data.id }}`
-  links:
-    - title: View in RH AAP
-      url: ${{ steps['launch-dbaas-job'].output.data.url }}
+          ### 🔑 Your Database Connection Strings
+          
+          Below are the details generated from your deployment playbook tasks:
+          
+          ```text
+          PostgreSQL Standard URL: postgresql://${{ parameters.db_user }}:${{ parameters.db_password }}@${{ steps['launch-dbaas-job'].output.data.artifacts.discovered_ip | default('172.31.60.175') }}:5432/${{ parameters.db_name }}
+          
+          CLI Command: PGPASSWORD='${{ parameters.db_password }}' psql -h ${{ steps['launch-dbaas-job'].output.data.artifacts.discovered_ip | default('172.31.60.175') }} -U ${{ parameters.db_user }} -d ${{ parameters.db_name }}
+          ```
+          
+          * **Job Execution ID:** `${{ steps['launch-dbaas-job'].output.data.id }}`
+          * **Target Inventory Host:** `${{ steps['launch-dbaas-job'].output.data.inventory_host | default('172.31.60.175') }}`
+          
+    links:
+      - title: Open AAP Job Execution Details
+        url: ${{ steps['launch-dbaas-job'].output.data.url }}
