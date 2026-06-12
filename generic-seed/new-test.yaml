@@ -21,6 +21,8 @@ spec:
 
   output:
     text:
-      - title: DEBUG - Full Output
+      - title: Job Info
         content: |
-          ${{ steps['launch-job'].output | dump }}
+          - **Job ID:** ${{ steps['launch-job'].output.data.id }}
+          - **Status:** ${{ steps['launch-job'].output.data.status }}
+          - **URL:** ${{ steps['launch-job'].output.data.url }}
