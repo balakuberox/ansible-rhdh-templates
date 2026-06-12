@@ -68,9 +68,8 @@ spec:
       input:
         token: ${{ secrets.aapToken }}
         values:
-          template: "Database-as-a-Service (DBaaS) Provisioner"
-          # Increases the polling timeout window to ensure the portal waits for the VM completion
-          timeout: 600 
+          # This must exactly match the Name text shown on your AAP black dashboard screen
+          template: "Database-as-a-Service (DBaaS) Provisioner" 
           extraVariables:
             db_type: ${{ parameters.db_type }}
             vm_size: ${{ parameters.vm_size }}
@@ -80,23 +79,24 @@ spec:
 
   output:
     text:
-      - title: 'DBaaS Provisioning Completed Successfully! 🎉'
+      - title: 'DBaaS Provisioning Requested Successfully! 🎉'
         content: |
-          Your request has been successfully executed by the Ansible Automation Platform engine.
+          Your request has been successfully accepted by the automation platform pipeline.
           
-          ### 🔑 Your Database Connection Strings
+          ### 📋 Your Database Connection Summary
           
-          Below are the details generated from your deployment playbook tasks:
+          Based on your choices, here are the connection profiles being initialized:
           
           ```text
-          PostgreSQL Standard URL: postgresql://${{ parameters.db_user }}:${{ parameters.db_password }}@${{ steps['launch-dbaas-job'].output.data.artifacts.discovered_ip | default('172.31.60.175') }}:5432/${{ parameters.db_name }}
+          Database Engine:   ${{ parameters.db_type | uppercase }}
+          Target Schema:     ${{ parameters.db_name }}
+          Admin Username:    ${{ parameters.db_user }}
           
-          CLI Command: PGPASSWORD='${{ parameters.db_password }}' psql -h ${{ steps['launch-dbaas-job'].output.data.artifacts.discovered_ip | default('172.31.60.175') }} -U ${{ parameters.db_user }} -d ${{ parameters.db_name }}
+          Standard URL String:
+          ${{ parameters.db_type }}://${{ parameters.db_user }}:${{ parameters.db_password }}@172.31.60.175:5432/${{ parameters.db_name }}
+          
+          Direct CLI Command Connection:
+          PGPASSWORD='${{ parameters.db_password }}' psql -h 172.31.60.175 -U ${{ parameters.db_user }} -d ${{ parameters.db_name }}
           ```
           
-          * **Job Execution ID:** `${{ steps['launch-dbaas-job'].output.data.id }}`
-          * **Target Inventory Host:** `${{ steps['launch-dbaas-job'].output.data.inventory_host | default('172.31.60.175') }}`
-          
-    links:
-      - title: Open AAP Job Execution Details
-        url: ${{ steps['launch-dbaas-job'].output.data.url }}
+          * **Service Portal Job Tracker Link:** Check your main AAP dashboard workspace to watch the execution logs compile the setup parameters.
