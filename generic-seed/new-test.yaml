@@ -4,6 +4,7 @@ metadata:
   name: ansible-hello-fetcher
   title: Fetch AAP Task Output Portal
   description: Triggers a job and grabs the specific 'Hello Message' string back.
+
 spec:
   owner: platform-team
   type: service
@@ -13,17 +14,18 @@ spec:
       properties: {}
 
   steps:
-steps:
-  - id: launch-hello-job
-    action: rhaap:launch-job-template
-    input:
-      token: ${{ secrets.aapToken }}
-      values:
-        template: "Demo Job Template"
+    - id: launch-hello-job
+      name: Triggering Hello World Playbook on AAP...
+      action: rhaap:launch-job-template
+      input:
+        token: ${{ secrets.aapToken }}
+        values:
+          template: "Demo Job Template"
+
   output:
     text:
       - title: Playbook Triggered Successfully!
         content: |
           Your AAP Job ID is: **${{ steps['launch-hello-job'].output.id }}**
-          
+
           You can track the live logs directly in your Ansible Automation Platform dashboard.
