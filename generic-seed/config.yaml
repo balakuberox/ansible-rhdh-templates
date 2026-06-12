@@ -63,12 +63,12 @@ spec:
 
   steps:
     - id: launch-dbaas-job
-      name: Launch DBaaS Job Template
+      # [UPDATED HERE] This changes the text above the loading spinner and in the logs!
+      name: Creating your Database VM on OpenShift Virtualization...
       action: rhaap:launch-job-template
       input:
         token: ${{ secrets.aapToken }}
         values:
-          # This must exactly match the Name text shown on your AAP black dashboard screen
           template: "Database-as-a-Service (DBaaS) Provisioner" 
           extraVariables:
             db_type: ${{ parameters.db_type }}
@@ -78,25 +78,22 @@ spec:
             db_password: ${{ parameters.db_password }}
 
   output:
-    text:
-      - title: 'DBaaS Provisioning Requested Successfully! 🎉'
-        content: |
-          Your request has been successfully accepted by the automation platform pipeline.
-          
-          ### 📋 Your Database Connection Summary
-          
-          Based on your choices, here are the connection profiles being initialized:
-          
-          ```text
-          Database Engine:   ${{ parameters.db_type | uppercase }}
-          Target Schema:     ${{ parameters.db_name }}
-          Admin Username:    ${{ parameters.db_user }}
-          
-          Standard URL String:
-          ${{ parameters.db_type }}://${{ parameters.db_user }}:${{ parameters.db_password }}@172.31.60.175:5432/${{ parameters.db_name }}
-          
-          Direct CLI Command Connection:
-          PGPASSWORD='${{ parameters.db_password }}' psql -h 172.31.60.175 -U ${{ parameters.db_user }} -d ${{ parameters.db_name }}
-          ```
-          
-          * **Service Portal Job Tracker Link:** Check your main AAP dashboard workspace to watch the execution logs compile the setup parameters.
+      text:
+        - title: 'DBaaS Provisioning Requested Successfully.'
+          content: |           
+            ### Your Database Connection Summary below
+            
+            Based on your choices, here are the connection profiles being initialized:
+            
+            * **Database Engine:** ${{ parameters.db_type }}
+            * **Target Schema:** ${{ parameters.db_name }}
+            * **Admin Username:** ${{ parameters.db_user }}
+            
+            #### Standard Connection URL
+            `${{ parameters.db_type }}://${{ parameters.db_user }}:${{ parameters.db_password }}@172.31.60.175:5432/${{ parameters.db_name }}`
+            
+            #### Direct CLI Command Connection
+            `PGPASSWORD='${{ parameters.db_password }}' psql -h 172.31.60.175 -U ${{ parameters.db_user }} -d ${{ parameters.db_name }}`
+            
+            * **Service Portal Job Tracker Link:** Check your main AAP dashboard workspace to watch the execution logs compile the setup parameters.
+            ```
