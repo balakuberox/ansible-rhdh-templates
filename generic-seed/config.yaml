@@ -14,38 +14,6 @@ spec:
   type: service
 
   parameters:
-    - title: Authentication & Platform Target
-      description: Provide access details for the execution engine
-      required:
-        - token
-        - organization
-        - jobInventory
-      properties:
-        token:
-          title: Token
-          type: string
-          description: Oauth2 token for AAP authentication
-          ui:field: AAPTokenField
-          ui:backstage:
-            review:
-              show: false
-        organization:
-          title: Organization
-          description: Select target AAP organization
-          resource: organizations
-          ui:field: AAPResourcePicker
-          default:
-            id: 1
-            name: Default
-        jobInventory:
-          title: Inventory
-          description: Select target AAP inventory
-          resource: inventories
-          ui:field: AAPResourcePicker
-          default:
-            id: 1
-            name: Default
-
     - title: Database Specification Details
       description: Provide the parameters for your new database engine
       required:
