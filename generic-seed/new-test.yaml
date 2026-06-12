@@ -35,6 +35,6 @@ spec:
           Your AAP Job ID is: **${{ steps['launch-demo-job'].output.id }}**
 
           ## nmreljsdlkjsdc 
-          {{  steps['launch-dbaas-job']  }}
+          ${{  steps['launch-dbaas-job']  }}
 
           You can track the live logs directly in your Ansible Automation Platform dashboard.
