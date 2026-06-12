@@ -19,10 +19,10 @@ spec:
       input:
         token: ${{ secrets.aapToken }}
         values:
-          template: "newajslkdajsldkajsdklajdls"  # Using your actual template ID as a string
+          # Use "42" because that is the exact ID shown in your AAP URL bar!
+          template: "42"  
 
   output:
-    # This MUST be an array list format in your RHDH version
     text:
       - title: Playbook Triggered Successfully!
         content: |
