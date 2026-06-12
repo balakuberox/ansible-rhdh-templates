@@ -13,15 +13,14 @@ spec:
       properties: {}
 
   steps:
-    - id: launch-hello-job
-      name: Triggering Hello World Playbook on AAP...
-      action: rhaap:launch-job-template
-      input:
-        token: ${{ secrets.aapToken }}
-        values:
-          # Use "42" because that is the exact ID shown in your AAP URL bar!
-          template: "42"  
-
+steps:
+  - id: launch-hello-job
+    action: rhaap:launch-job-template
+    input:
+      token: ${{ secrets.aapToken }}
+      values:
+        template: "Hello World Playbook"
+        
   output:
     text:
       - title: Playbook Triggered Successfully!
