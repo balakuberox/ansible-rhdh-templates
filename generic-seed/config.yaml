@@ -1,0 +1,60 @@
+apiVersion: backstage.io/v1alpha1
+kind: Template
+# metadata.name must be alphanumeric with hyphens only (no spaces or underscores)
+metadata:
+  name: dbaas-provisioner
+  title: Database-as-a-Service (DBaaS)
+  description: Automatically provision a dedicated PostgreSQL or MySQL database VM on OpenShift Virtualization.
+  tags:
+    - database
+    - openshift
+    - ansible
+spec:
+  owner: guest
+  type: service
+
+  # 1. This builds the Frontend Form UI steps in the Portal
+  parameters:
+    - title: Provide Database Configuration Details
+      required:
+        - db_type
+        - db_name
+        - db_user
+        - db_password
+      properties:
+        db_type:
+          title: Database Engine Selection
+          type: string
+          description: Choose the underlying database core engine type.
+          default: postgresql
+          enum:
+            - postgresql
+            - mysql
+          enumNames:
+            - "PostgreSQL 15"
+            - "MySQL / MariaDB"
+        db_name:
+          title: Database Name
+          type: string
+          description: Enter a unique identifier name for the database schema.
+        db_user:
+          title: Master Username
+          type: string
+          default: dbadmin
+        db_password:
+          title: Master Password
+          type: string
+          ui:widget: password
+
+  # 2. This defines the Backend Action (Executing your playbook)
+  steps:
+    - id: run-playbook
+      name: Trigger Ansible Playbook Workflow
+      action: ansible:playbook:run # Uses the built-in AAP platform action parser
+      input:
+        playbookPath: ../playbooks/provision_database.yml
+        extraVars:
+          db_type: ${{ parameters.db_type }}
+          db_name: ${{ parameters.db_name }}
+          db_user: ${{ parameters.db_user }}
+          db_password: ${{ parameters.db_password }}
