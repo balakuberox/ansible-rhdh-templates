@@ -13,12 +13,12 @@ spec:
   owner: RedHat
   type: service
 
-  # Cleaned up parameters: Only contains fields your user actually fills out!
   parameters:
     - title: Database Specification Details
       description: Provide the parameters for your new database engine
       required:
         - db_type
+        - vm_size # [UPDATED] Mark it required for the form
         - db_name
         - db_user
         - db_password
@@ -34,6 +34,22 @@ spec:
           enumNames:
             - "PostgreSQL 15"
             - "MySQL / MariaDB"
+            
+        # [NEW FIELD] Dropdown for the user to select the VM instance profile
+        vm_size:
+          title: Virtual Machine Compute Size
+          type: string
+          description: Select the CPU/RAM allocation for the underlying OpenShift Virtualization VM.
+          default: small
+          enum:
+            - small
+            - medium
+            - large
+          enumNames:
+            - "Small (2 vCPU, 4GB RAM)"
+            - "Medium (4 vCPU, 8GB RAM)"
+            - "Large (8 vCPU, 16GB RAM)"
+
         db_name:
           title: Database Name
           type: string
@@ -53,12 +69,12 @@ spec:
       name: Launch DBaaS Job Template
       action: rhaap:launch-job-template
       input:
-        # [FIX] Read directly from the secrets object instead of parameters!
         token: ${{ secrets.aapToken }}
         values:
           template: "Database-as-a-Service (DBaaS) Provisioner"
           extraVariables:
             db_type: ${{ parameters.db_type }}
+            vm_size: ${{ parameters.vm_size }} # [UPDATED] Forward it over to AAP here!
             db_name: ${{ parameters.db_name }}
             db_user: ${{ parameters.db_user }}
             db_password: ${{ parameters.db_password }}
