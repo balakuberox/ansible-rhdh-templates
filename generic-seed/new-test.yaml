@@ -30,14 +30,13 @@ spec:
         
   output:
     text:
-      - title: Playbook Triggered Successfully!
+      - title: Raw Output
         content: |
-          Your AAP Job ID is: **${{ steps['launch-demo-job'].output.id }}**
-
-          ## nmreljsdlkjsdc 
-          ${{  steps['launch-demo-job'].output.data.artifacts }}
-
-          You can track the live logs directly in your Ansible Automation Platform dashboard.
+          ID:
+          ${{ steps['launch-demo-job'].output.id }}
+  
+          DATA:
+          ${{ steps['launch-demo-job'].output.data }}
     links:
       - title: View in RH AAP
         url: ${{ steps['launch-demo-job'].output.data.url }}
