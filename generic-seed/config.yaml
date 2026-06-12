@@ -14,6 +14,21 @@ spec:
   type: service
 
   parameters:
+    # --- PAGE 1: Secret Authentication Handling (Invisible / Auto-injected) ---
+    - title: Platform Authentication
+      required:
+        - token
+      properties:
+        token:
+          title: Token
+          type: string
+          description: Oauth2 token
+          ui:field: AAPTokenField # <-- Portal auto-injects the token here
+          ui:backstage:
+            review:
+              show: false # <-- Hides it from the user confirmation page
+
+    # --- PAGE 2: User-Facing Input Fields ---
     - title: Database Specification Details
       description: Provide the parameters for your new database engine
       required:
@@ -48,14 +63,12 @@ spec:
           ui:widget: password
 
   steps:
-    # Match your portal's custom runner syntax exactly to kick off your playbook
     - id: launch-dbaas-job
       name: Launch DBaaS Job Template
       action: rhaap:launch-job-template
       input:
-        token: ${{ parameters.token }}
+        token: ${{ parameters.token }} # <-- Passes the auto-injected token to AAP
         values:
-          # This must match the string name of the Job Template in your AAP Controller UI
           template: "Database-as-a-Service (DBaaS) Provisioner"
           extraVariables:
             db_type: ${{ parameters.db_type }}
