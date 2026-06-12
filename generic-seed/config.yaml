@@ -14,7 +14,7 @@ spec:
   type: service
 
   parameters:
-    # --- PAGE 1: Secret Authentication Handling (Invisible / Auto-injected) ---
+    # --- Step 1: Capture Token Natively ---
     - title: Platform Authentication
       required:
         - token
@@ -23,12 +23,12 @@ spec:
           title: Token
           type: string
           description: Oauth2 token
-          ui:field: AAPTokenField # <-- Portal auto-injects the token here
+          ui:field: AAPTokenField
           ui:backstage:
             review:
-              show: false # <-- Hides it from the user confirmation page
+              show: false
 
-    # --- PAGE 2: User-Facing Input Fields ---
+    # --- Step 2: Database Inputs ---
     - title: Database Specification Details
       description: Provide the parameters for your new database engine
       required:
@@ -67,7 +67,7 @@ spec:
       name: Launch DBaaS Job Template
       action: rhaap:launch-job-template
       input:
-        token: ${{ parameters.token }} # <-- Passes the auto-injected token to AAP
+        token: ${{ parameters.token }}
         values:
           template: "Database-as-a-Service (DBaaS) Provisioner"
           extraVariables:
@@ -84,5 +84,5 @@ spec:
           
           **Job Execution ID:** `${{ steps['launch-dbaas-job'].output.data.id }}`
   links:
-    - title: Monitor Progress in RH AAP
+    - title: View in RH AAP
       url: ${{ steps['launch-dbaas-job'].output.data.url }}
