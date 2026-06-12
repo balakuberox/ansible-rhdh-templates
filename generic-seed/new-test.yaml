@@ -19,7 +19,7 @@ steps:
     input:
       token: ${{ secrets.aapToken }}
       values:
-        template: "Hello World Playbook"
+        template: "Demo Job Template"
         
   output:
     text:
