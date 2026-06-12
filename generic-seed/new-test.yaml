@@ -30,13 +30,9 @@ spec:
         
   output:
     text:
-      - title: Raw Output
+      - title: Debug
         content: |
-          ID:
-          ${{ steps['launch-demo-job'].output.id }}
-  
-          DATA:
-          ${{ steps['launch-demo-job'].output.data }}
+          ${{ dump(steps['launch-demo-job'].output) }}
     links:
       - title: View in RH AAP
         url: ${{ steps['launch-demo-job'].output.data.url }}
