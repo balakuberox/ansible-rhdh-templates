@@ -24,7 +24,7 @@ spec:
       input:
         token: ${{ secrets.aapToken }}
         values:
-          template: "Demo Job Template"
+          template: "newajslkdajsldkajsdklajdls"
           extraVariables:
              kajshkjahs: kaskjads
         
