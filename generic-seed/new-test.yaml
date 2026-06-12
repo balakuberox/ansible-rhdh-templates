@@ -24,7 +24,7 @@ spec:
       input:
         token: ${{ secrets.aapToken }}
         values:
-          template: "newajslkdajsldkajsdklajdls"
+          template: "hello-world"
           extraVariables:
              kajshkjahs: kaskjads
         
