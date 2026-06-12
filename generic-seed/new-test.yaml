@@ -1,26 +1,32 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: ansible-hello-fetcher
-  title: Fetch AAP Task Output Portal
-  description: Triggers a job and grabs the specific 'Hello Message' string back.
-
+  name: dbaas-vm-provisioner
+  title: Database-as-a-Service (DBaaS)
+  description: Automatically provision a dedicated PostgreSQL or MySQL database VM on OpenShift Virtualization via AAP.
+  namespace: default
+  tags:
+    - database
+    - openshift
+    - dbaas
 spec:
-  owner: platform-team
+  owner: RedHat
   type: service
-
+  
   parameters:
     - title: Provide Details
       properties: {}
-
+      
   steps:
-    - id: launch-hello-job
+    - id: launch-demo-job
       name: Triggering Hello World Playbook on AAP...
       action: rhaap:launch-job-template
       input:
         token: ${{ secrets.aapToken }}
         values:
           template: "Demo Job Template"
+          extraVariables:
+             kajshkjahs: kaskjads
         
   output:
     text:
