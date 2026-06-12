@@ -1,0 +1,43 @@
+apiVersion: scaffold.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: ansible-hello-fetcher
+  title: Fetch AAP Task Output Portal
+  description: Triggers a job and grabs the specific 'Hello Message' string back.
+spec:
+  owner: platform-team
+  type: service
+
+  steps:
+    - id: launch_job
+      name: Trigger Demo Job Template
+      action: http:backstage:request
+      input:
+        method: POST
+        # Replace with your actual Job Template ID
+        path: /api/v2/job_templates/DEMO_TEMPLATE_ID/launch/
+
+    # Backstage waits here or you use a built-in poller until status is successful
+    - id: wait_for_completion
+      name: Monitoring Job Status
+      action: http:backstage:request
+      input:
+        method: GET
+        path: /api/v2/jobs/${{ steps['launch_job'].output.body.id }}/
+
+    # SCRAPE THE TASK DETAILS SPECIFICALLY:
+    - id: fetch_task_output
+      name: Extracting Hello Message Task Output
+      action: http:backstage:request
+      input:
+        method: GET
+        # Filter AAP API specifically for your task name 'Hello Message'
+        path: /api/v2/jobs/${{ steps['launch_job'].output.body.id }}/job_events/?task=Hello+Message
+
+  output:
+    text: |
+      ### Self-Service Portal Output Received!
+      
+      The execution completed successfully. Here is the string retrieved from the AAP task log:
+      
+      > **Message:** ${{ steps['fetch_task_output'].output.body.results[0].event_data.res.msg }}
