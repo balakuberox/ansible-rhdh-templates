@@ -32,7 +32,10 @@ spec:
     text:
       - title: Debug
         content: |
-          ${{ steps['launch-demo-job'].output | json }}
-    links:
-      - title: View in RH AAP
-        url: ${{ steps['launch-demo-job'].output.data.url }}
+          Job ID: ${{ steps['launch-demo-job'].output.id }}
+  
+          URL: ${{ steps['launch-demo-job'].output.data.url }}
+  
+          Artifacts: ${{ steps['launch-demo-job'].output.data.artifacts }}
+  
+          Name: ${{ steps['launch-demo-job'].output.data.artifacts.name }}
