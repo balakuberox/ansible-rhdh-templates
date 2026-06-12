@@ -37,7 +37,13 @@ spec:
         content: |
           ${{ steps['launch-job'].output.data.artifacts | dump }}
 
-        
+      - title: Job Artifacts - ashjkda
+        content: |
+          - **Message:** ${{ steps['launch-job'].output.data.events[9].event_data.artifact_data.message }}
+          - **Job Status:** ${{ steps['launch-job'].output.data.events[9].event_data.artifact_data.job_status }}
+          - **Ran By:** ${{ steps['launch-job'].output.data.events[9].event_data.artifact_data.ran_by }}
+  
+          
     links:
       - title: Open AAP Job
         url: ${{ steps['launch-job'].output.data.url }}
