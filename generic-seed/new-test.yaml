@@ -42,7 +42,18 @@ spec:
           - **Message:** ${{ steps['launch-job'].output.data.events[9].event_data.artifact_data.message }}
           - **Job Status:** ${{ steps['launch-job'].output.data.events[9].event_data.artifact_data.job_status }}
           - **Ran By:** ${{ steps['launch-job'].output.data.events[9].event_data.artifact_data.ran_by }}
-  
+          
+      - title: Job Artifacts
+        content: |
+          - **Message:** ${{ steps['launch-job'].output.data.events[10].event_data.artifact_data.message }}
+          - **Job Status:** ${{ steps['launch-job'].output.data.events[10].event_data.artifact_data.job_status }}
+          - **Ran By:** ${{ steps['launch-job'].output.data.events[10].event_data.artifact_data.ran_by }}
+          
+      - title: Job Artifacts-newksjla
+        content: |
+          - **Message:** ${{ steps['launch-job'].output.data.events[N].event_data.res.msg.message }}
+          - **Job Status:** ${{ steps['launch-job'].output.data.events[N].event_data.res.msg.job_status }}
+          - **Ran By:** ${{ steps['launch-job'].output.data.events[N].event_data.res.msg.ran_by }}
           
     links:
       - title: Open AAP Job
