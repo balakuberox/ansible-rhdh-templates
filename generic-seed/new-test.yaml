@@ -32,7 +32,7 @@ spec:
     text:
       - title: Debug
         content: |
-          ${{ dump(steps['launch-demo-job'].output) }}
+          ${{ steps['launch-demo-job'].output | json }}
     links:
       - title: View in RH AAP
         url: ${{ steps['launch-demo-job'].output.data.url }}
