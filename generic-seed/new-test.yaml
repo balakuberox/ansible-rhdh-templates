@@ -19,7 +19,7 @@ spec:
       input:
         token: ${{ secrets.aapToken }}
         values:
-          template: "6"  # Using your actual template ID as a string
+          template: "newajslkdajsldkajsdklajdls"  # Using your actual template ID as a string
 
   output:
     # This MUST be an array list format in your RHDH version
