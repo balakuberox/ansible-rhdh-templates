@@ -23,4 +23,4 @@ spec:
     text:
       - title: DEBUG - Full Output
         content: |
-          ${{ steps['launch-job'].output }}
+          ${{ steps['launch-job'].output | dump }}
