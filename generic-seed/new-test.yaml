@@ -26,12 +26,18 @@ spec:
           - **Job ID:** ${{ steps['launch-job'].output.data.id }}
           - **Status:** ${{ steps['launch-job'].output.data.status }}
           - **URL:** ${{ steps['launch-job'].output.data.url }}
-  
+    
+      # ✅ Dump the FULL data object to see everything
+      - title: Job Artifacts dump
+        content: |
+          ${{ steps['launch-job'].output.data | dump }}
+          
       # ✅ Add this
       - title: Job Artifacts
         content: |
           ${{ steps['launch-job'].output.data.artifacts | dump }}
-  
+
+        
     links:
       - title: Open AAP Job
         url: ${{ steps['launch-job'].output.data.url }}
