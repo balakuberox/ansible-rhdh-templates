@@ -92,5 +92,9 @@ spec:
           * **Admin Username:** ${{ parameters.db_user }}
           
           #### Standard Connection URL & CLI Commands
-          ${{ steps['launch-dbaas-job'].output.data.artifacts.db_connection_info }}
+          - **Message:** ${{ steps['launch-dbaas-job'].output.data.events[steps['launch-dbaas-job'].output.data.events.length - 1].event_data.artifact_data.db_connection_info }}
+          
+# - **Job Status:** ${{ steps['launch-dbaas-job'].output.data.events[steps['launch-dbaas-job'].output.data.events.length - 1].event_data.artifact_data.job_status }}
+# - **Ran By:** ${{ steps['launch-dbaas-job'].output.data.events[steps['launch-dbaas-job'].output.data.events.length - 1].event_data.artifact_data.ran_by }}
+          
           
