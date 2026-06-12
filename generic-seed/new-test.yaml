@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: dbaas-vm-provisioner
-  title: Database-as-a-Service (DBaaS)
+  name: askjalskdasdasdasdas
+  title: aslkasjdkljalsdkjasd
   description: Automatically provision a dedicated PostgreSQL or MySQL database VM on OpenShift Virtualization via AAP.
   namespace: default
   tags:
