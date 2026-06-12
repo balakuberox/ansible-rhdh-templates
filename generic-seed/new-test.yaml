@@ -19,7 +19,7 @@ spec:
       input:
         token: ${{ secrets.aapToken }}
         values:
-          template: 42
+          template: 6
 
   output:
     # This MUST be an array list format in your RHDH version
