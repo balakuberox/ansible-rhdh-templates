@@ -3,18 +3,51 @@ kind: Template
 metadata:
   name: dbaas-vm-provisioner
   title: Database-as-a-Service (DBaaS)
-  description: Automatically provision a dedicated PostgreSQL or MySQL database VM on OpenShift Virtualization.
+  description: Automatically provision a dedicated PostgreSQL or MySQL database VM on OpenShift Virtualization via AAP.
+  namespace: default
   tags:
     - database
     - openshift
-    - ansible
+    - dbaas
 spec:
-  owner: guest
+  owner: RedHat
   type: service
 
-  # 1. This builds your input questionnaire in the Self-Service Portal
   parameters:
-    - title: Database Configuration
+    - title: Authentication & Platform Target
+      description: Provide access details for the execution engine
+      required:
+        - token
+        - organization
+        - jobInventory
+      properties:
+        token:
+          title: Token
+          type: string
+          description: Oauth2 token for AAP authentication
+          ui:field: AAPTokenField
+          ui:backstage:
+            review:
+              show: false
+        organization:
+          title: Organization
+          description: Select target AAP organization
+          resource: organizations
+          ui:field: AAPResourcePicker
+          default:
+            id: 1
+            name: Default
+        jobInventory:
+          title: Inventory
+          description: Select target AAP inventory
+          resource: inventories
+          ui:field: AAPResourcePicker
+          default:
+            id: 1
+            name: Default
+
+    - title: Database Specification Details
+      description: Provide the parameters for your new database engine
       required:
         - db_type
         - db_name
@@ -46,16 +79,31 @@ spec:
           type: string
           ui:widget: password
 
-  # 2. This links the form to your Ansible Automation Platform Controller
   steps:
-    - id: run-playbook
-      name: Trigger Ansible Job Template
-      action: ansible:controller:jobTemplate:run
+    # Match your portal's custom runner syntax exactly to kick off your playbook
+    - id: launch-dbaas-job
+      name: Launch DBaaS Job Template
+      action: rhaap:launch-job-template
       input:
-        # Match the name of your Job Template in your AAP Controller exactly
-        jobTemplateName: "Database-as-a-Service (DBaaS) Provisioner"
-        extraVars:
-          db_type: ${{ parameters.db_type }}
-          db_name: ${{ parameters.db_name }}
-          db_user: ${{ parameters.db_user }}
-          db_password: ${{ parameters.db_password }}
+        token: ${{ parameters.token }}
+        values:
+          # This must match the string name of the Job Template in your AAP Controller UI
+          template: "Database-as-a-Service (DBaaS) Provisioner"
+          extraVariables:
+            db_type: ${{ parameters.db_type }}
+            db_name: ${{ parameters.db_name }}
+            db_user: ${{ parameters.db_user }}
+            db_password: ${{ parameters.db_password }}
+            organization: ${{ parameters.organization | resourceFilter('name')}}
+            inventory: ${{ parameters.jobInventory | resourceFilter('name')}}
+
+  output:
+    text:
+      - title: 'DBaaS Provisioning Job Triggered Successfully'
+        content: |
+          Your request has been successfully routed to the Ansible Automation Platform engine.
+          
+          **Job Execution ID:** `${{ steps['launch-dbaas-job'].output.data.id }}`
+  links:
+    - title: Monitor Progress in RH AAP
+      url: ${{ steps['launch-dbaas-job'].output.data.url }}
