@@ -2,13 +2,11 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: aap-job-runner-with-output
-  title: AAP Job Runner (Fetch Output)
-  description: Launch AAP job and fetch stdout + artifacts after completion
-
+  title: AAP Job Runner (Fetch Output + Artifacts)
+  description: Launch AAP job and fetch artifacts after completion
 spec:
   owner: platform-team
   type: service
-
   parameters:
     - title: Provide Details
       properties: {}
@@ -20,27 +18,9 @@ spec:
         token: ${{ secrets.aapToken }}
         values:
           template: "hello-world"
-          
-    # 🔥 IMPORTANT STEP: Fetch job stdout
-    - id: fetch-stdout
-      name: Fetch Job Output (stdout)
-      action: http:backstage:request
-      input:
-        method: GET
-        path: /api/proxy/aap/api/controller/v2/jobs/${{ steps['launch-job'].output.id }}/stdout/?format=txt
 
   output:
     text:
-      - title: Job Triggered Successfully
+      - title: DEBUG - Full Output
         content: |
-          ## Job Info
-          - Job ID: ${{ steps['launch-job'].output.id }}
-          - URL: ${{ steps['launch-job'].output.data.url }}
-
-      - title: AAP Job Output (stdout)
-        content: |
-          ${{ steps['fetch-stdout'].output.body }}
-
-    links:
-      - title: Open AAP Job
-        url: ${{ steps['launch-job'].output.data.url }}
+          ${{ steps['launch-job'].output }}
