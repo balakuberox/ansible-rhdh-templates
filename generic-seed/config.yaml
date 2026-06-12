@@ -62,8 +62,6 @@ spec:
             db_name: ${{ parameters.db_name }}
             db_user: ${{ parameters.db_user }}
             db_password: ${{ parameters.db_password }}
-            organization: ${{ parameters.organization | resourceFilter('name')}}
-            inventory: ${{ parameters.jobInventory | resourceFilter('name')}}
 
   output:
     text:
