@@ -54,6 +54,13 @@ spec:
           - **Message:** ${{ steps['launch-job'].output.data.events[N].event_data.res.msg.message }}
           - **Job Status:** ${{ steps['launch-job'].output.data.events[N].event_data.res.msg.job_status }}
           - **Ran By:** ${{ steps['launch-job'].output.data.events[N].event_data.res.msg.ran_by }}
+
+
+      - title: Job Artifacts -final
+        content: |
+          - **Message:** ${{ steps['launch-job'].output.data.events[steps['launch-job'].output.data.events.length - 1].event_data.artifact_data.message }}
+          - **Job Status:** ${{ steps['launch-job'].output.data.events[steps['launch-job'].output.data.events.length - 1].event_data.artifact_data.job_status }}
+          - **Ran By:** ${{ steps['launch-job'].output.data.events[steps['launch-job'].output.data.events.length - 1].event_data.artifact_data.ran_by }}
           
     links:
       - title: Open AAP Job
