@@ -69,7 +69,7 @@ spec:
       input:
         token: ${{ secrets.aapToken }}
         values:
-          template: "Database-as-a-Service (DBaaS) Provisioner." 
+          template: "Database-as-a-Service (DBaaS) Provisioner" 
           extraVariables:
             db_type: ${{ parameters.db_type }}
             vm_size: ${{ parameters.vm_size }}
