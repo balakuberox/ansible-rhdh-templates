@@ -20,8 +20,7 @@ spec:
       input:
         token: ${{ secrets.aapToken }}
         values:
-          template: "Demo Job Template"
-
+          template: "7"
   output:
     text:
       - title: Playbook Triggered Successfully!
