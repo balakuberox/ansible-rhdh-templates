@@ -1,8 +1,7 @@
-apiVersion: backstage.io/v1alpha1
+apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
-# metadata.name must be alphanumeric with hyphens only (no spaces or underscores)
 metadata:
-  name: dbaas-provisioner
+  name: dbaas-vm-provisioner
   title: Database-as-a-Service (DBaaS)
   description: Automatically provision a dedicated PostgreSQL or MySQL database VM on OpenShift Virtualization.
   tags:
@@ -13,9 +12,9 @@ spec:
   owner: guest
   type: service
 
-  # 1. This builds the Frontend Form UI steps in the Portal
+  # 1. This builds your input questionnaire in the Self-Service Portal
   parameters:
-    - title: Provide Database Configuration Details
+    - title: Database Configuration
       required:
         - db_type
         - db_name
@@ -37,6 +36,7 @@ spec:
           title: Database Name
           type: string
           description: Enter a unique identifier name for the database schema.
+          default: app-db
         db_user:
           title: Master Username
           type: string
@@ -46,13 +46,14 @@ spec:
           type: string
           ui:widget: password
 
-  # 2. This defines the Backend Action (Executing your playbook)
+  # 2. This links the form to your Ansible Automation Platform Controller
   steps:
     - id: run-playbook
-      name: Trigger Ansible Playbook Workflow
-      action: ansible:playbook:run # Uses the built-in AAP platform action parser
+      name: Trigger Ansible Job Template
+      action: ansible:controller:jobTemplate:run
       input:
-        playbookPath: ../playbooks/provision_database.yml
+        # Match the name of your Job Template in your AAP Controller exactly
+        jobTemplateName: "Database-as-a-Service (DBaaS) Provisioner"
         extraVars:
           db_type: ${{ parameters.db_type }}
           db_name: ${{ parameters.db_name }}
