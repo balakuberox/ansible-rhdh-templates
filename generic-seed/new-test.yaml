@@ -22,7 +22,7 @@ spec:
     text:
       - title: DEBUG Full Dump
         content: |
-          ${{ steps['launch-job'].output.data | dump }}
+          ${{ steps['launch-job'].output | dump }}
           
       - title: Job Info
         content: |
