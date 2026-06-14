@@ -1,7 +1,7 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: aap-job-runner-with-output- new
+  name: aap-job-runner-with-output-new
   title: AAP Job Runner (Fetch Output + Artifacts) New
   description: Launch AAP job and fetch artifacts after completion New
 spec:
