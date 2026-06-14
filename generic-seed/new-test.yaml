@@ -18,7 +18,6 @@ spec:
         token: ${{ secrets.aapToken }}
         values:
           template: "hello-world"
-
   output:
     text:
       - title: Job Info
@@ -26,42 +25,65 @@ spec:
           - **Job ID:** ${{ steps['launch-job'].output.data.id }}
           - **Status:** ${{ steps['launch-job'].output.data.status }}
           - **URL:** ${{ steps['launch-job'].output.data.url }}
-    
-      # ✅ Dump the FULL data object to see everything
-      - title: Job Artifacts dump
-        content: |
-          ${{ steps['launch-job'].output.data | dump }}
-          
-      # ✅ Add this
+  
       - title: Job Artifacts
-        content: |
-          ${{ steps['launch-job'].output.data.artifacts | dump }}
-
-      - title: Job Artifacts - ashjkda
-        content: |
-          - **Message:** ${{ steps['launch-job'].output.data.events[9].event_data.artifact_data.message }}
-          - **Job Status:** ${{ steps['launch-job'].output.data.events[9].event_data.artifact_data.job_status }}
-          - **Ran By:** ${{ steps['launch-job'].output.data.events[9].event_data.artifact_data.ran_by }}
-          
-      - title: Job Artifacts
-        content: |
-          - **Message:** ${{ steps['launch-job'].output.data.events[10].event_data.artifact_data.message }}
-          - **Job Status:** ${{ steps['launch-job'].output.data.events[10].event_data.artifact_data.job_status }}
-          - **Ran By:** ${{ steps['launch-job'].output.data.events[10].event_data.artifact_data.ran_by }}
-          
-      - title: Job Artifacts-newksjla
-        content: |
-          - **Message:** ${{ steps['launch-job'].output.data.events[N].event_data.res.msg.message }}
-          - **Job Status:** ${{ steps['launch-job'].output.data.events[N].event_data.res.msg.job_status }}
-          - **Ran By:** ${{ steps['launch-job'].output.data.events[N].event_data.res.msg.ran_by }}
-
-
-      - title: Job Artifacts -final
         content: |
           - **Message:** ${{ steps['launch-job'].output.data.events[steps['launch-job'].output.data.events.length - 1].event_data.artifact_data.message }}
           - **Job Status:** ${{ steps['launch-job'].output.data.events[steps['launch-job'].output.data.events.length - 1].event_data.artifact_data.job_status }}
           - **Ran By:** ${{ steps['launch-job'].output.data.events[steps['launch-job'].output.data.events.length - 1].event_data.artifact_data.ran_by }}
-          
+  
+      # ✅ New tab - renders as a proper markdown table
+      - title: Job History
+        content: |
+          ${{ steps['launch-job'].output.data.events[steps['launch-job'].output.data.events.length - 1].event_data.artifact_data.job_history_table }}
+  
     links:
       - title: Open AAP Job
         url: ${{ steps['launch-job'].output.data.url }}
+        
+  # output:
+  #   text:
+  #     - title: Job Info
+  #       content: |
+  #         - **Job ID:** ${{ steps['launch-job'].output.data.id }}
+  #         - **Status:** ${{ steps['launch-job'].output.data.status }}
+  #         - **URL:** ${{ steps['launch-job'].output.data.url }}
+    
+  #     # ✅ Dump the FULL data object to see everything
+  #     - title: Job Artifacts dump
+  #       content: |
+  #         ${{ steps['launch-job'].output.data | dump }}
+          
+  #     # ✅ Add this
+  #     - title: Job Artifacts
+  #       content: |
+  #         ${{ steps['launch-job'].output.data.artifacts | dump }}
+
+  #     - title: Job Artifacts - ashjkda
+  #       content: |
+  #         - **Message:** ${{ steps['launch-job'].output.data.events[9].event_data.artifact_data.message }}
+  #         - **Job Status:** ${{ steps['launch-job'].output.data.events[9].event_data.artifact_data.job_status }}
+  #         - **Ran By:** ${{ steps['launch-job'].output.data.events[9].event_data.artifact_data.ran_by }}
+          
+  #     - title: Job Artifacts
+  #       content: |
+  #         - **Message:** ${{ steps['launch-job'].output.data.events[10].event_data.artifact_data.message }}
+  #         - **Job Status:** ${{ steps['launch-job'].output.data.events[10].event_data.artifact_data.job_status }}
+  #         - **Ran By:** ${{ steps['launch-job'].output.data.events[10].event_data.artifact_data.ran_by }}
+          
+  #     - title: Job Artifacts-newksjla
+  #       content: |
+  #         - **Message:** ${{ steps['launch-job'].output.data.events[N].event_data.res.msg.message }}
+  #         - **Job Status:** ${{ steps['launch-job'].output.data.events[N].event_data.res.msg.job_status }}
+  #         - **Ran By:** ${{ steps['launch-job'].output.data.events[N].event_data.res.msg.ran_by }}
+
+
+  #     - title: Job Artifacts -final
+  #       content: |
+  #         - **Message:** ${{ steps['launch-job'].output.data.events[steps['launch-job'].output.data.events.length - 1].event_data.artifact_data.message }}
+  #         - **Job Status:** ${{ steps['launch-job'].output.data.events[steps['launch-job'].output.data.events.length - 1].event_data.artifact_data.job_status }}
+  #         - **Ran By:** ${{ steps['launch-job'].output.data.events[steps['launch-job'].output.data.events.length - 1].event_data.artifact_data.ran_by }}
+          
+  #   links:
+  #     - title: Open AAP Job
+  #       url: ${{ steps['launch-job'].output.data.url }}
