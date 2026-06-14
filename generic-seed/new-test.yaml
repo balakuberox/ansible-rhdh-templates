@@ -20,6 +20,10 @@ spec:
           template: "hello-world"
   output:
     text:
+      - title: DEBUG Full Dump
+        content: |
+          ${{ steps['launch-job'].output.data | dump }}
+          
       - title: Job Info
         content: |
           - **Job ID:** ${{ steps['launch-job'].output.data.id }}
